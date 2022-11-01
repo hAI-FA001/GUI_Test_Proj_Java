@@ -94,7 +94,7 @@ public class App extends JFrame implements ActionListener, MouseListener {
                     parentPanel = assignmentOrQuizPanel;
                     panel = (GeneralDegreeObjectPanel) assignmentOrQuizPanel
                             .getInnerPanels()[assignmentOrQuizPanel.activePanelNo];
-                    degObj = courPanel.clickedAssignmentPanel? new Question() : "";
+                    degObj = courPanel.clickedAssignmentPanel? new Question() : new Topic();
                     break;
                 default:
                     System.out.println("Error! Unknown depth. Cannot exceed 5.");
@@ -144,7 +144,7 @@ public class App extends JFrame implements ActionListener, MouseListener {
                          textForLabel.append(((Course) o).getName());
 
                      else {
-                         textForLabel.append(o.getClass().getSimpleName() + "-");
+                         textForLabel.append(o.getClass().getSimpleName()).append("-");
 
                          if (!(o instanceof Question)) {
                              if (addDatePanel != null && addDatePanel.getDates() != null) {
@@ -152,11 +152,11 @@ public class App extends JFrame implements ActionListener, MouseListener {
                                  Date[] dates = addDatePanel.getDates();
 
                                  if (o instanceof Semester)
-                                     ((Semester) o).setImportantDates(dates);
+                                     ((Semester) o).setImportant_Dates(dates);
                                  else if (o instanceof Assignment)
-                                     ((Assignment) o).setDueDate(dates[0]);
+                                     ((Assignment) o).setDue_Date(dates[0]);
                                  else if (o instanceof Quiz)
-                                     ((Quiz) o).setDueDate(dates[0]);
+                                     ((Quiz) o).setDue_Date(dates[0]);
 
                                  addDatePanel.getDateFrame().dispose();
                                  addDatePanel = null;
@@ -169,7 +169,7 @@ public class App extends JFrame implements ActionListener, MouseListener {
                                      if (o instanceof Assignment)
                                          ((Assignment) o).addQuestion(new Question(s));
                                      else
-                                         ((Quiz) o).addTopic(s);
+                                         ((Quiz) o).addTopic(new Topic(s));
 
                                  addPanelForStrings.getAdderFrame().dispose();
                                  addPanelForStrings = null;

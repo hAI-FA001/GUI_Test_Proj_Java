@@ -16,6 +16,13 @@ public class SemestersPanel extends GeneralDegreeObjectPanel {
     }
 
     @Override
+    public void addDegreeObject(JFrame parentFrame, String labelText, int numAdded){
+        super.addDegreeObject(parentFrame, labelText, numAdded);
+        for(int i = this.semesters.length - numAdded; i < this.semesters.length; i++)
+            semesters[i].setSemester_No(i+1);
+    }
+
+    @Override
     public void incrementSizeBy(int size) {
         super.incrementSizeBy(size);
 

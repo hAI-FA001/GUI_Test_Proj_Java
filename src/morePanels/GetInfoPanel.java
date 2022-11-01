@@ -248,8 +248,8 @@ public class GetInfoPanel extends JPanel implements FocusListener {
             }
             break;
             case "Semester": {
-                toSetInfoOf = new Semester(null, Integer.parseInt(valuesFromTextFields[0]),
-                        valuesFromTextFields[1], null);
+                toSetInfoOf = new Semester(null, 0,
+                        valuesFromTextFields[0], null);
             }
             break;
             case "Course": {
@@ -267,6 +267,10 @@ public class GetInfoPanel extends JPanel implements FocusListener {
             break;
             case "Question": {
                 toSetInfoOf = new Question(valuesFromTextFields[0]);
+            }
+            break;
+            case "Topic": {
+                toSetInfoOf = new Topic(valuesFromTextFields[0]);
             }
             break;
             default:

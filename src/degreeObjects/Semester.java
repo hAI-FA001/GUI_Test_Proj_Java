@@ -9,55 +9,56 @@ public class Semester implements DegreeObjectCommon, DegreeDateCommon{
     @Description("ignore in GetInfoPanel OptionsPanel")
     JPanel[] panelsCourses;
 
-    @Description("ignore in GetInfoPanel")
+    @Description("ignore in GetInfoPanel, degree object")
     private Course[] courses;
-    private int semesterNo;
+    @Description("ignore in GetInfoPanel")
+    private int semester_No;
     private String batch;
-    private Date[] importantDates;
+    private Date[] important_Dates;
 
     public Semester(Course[] courses, int semesterNo, String batch, Date[] importantDates) {
         this.courses = courses;
-        this.semesterNo = semesterNo;
+        this.semester_No = semesterNo;
         this.batch = batch;
-        this.importantDates = importantDates;
+        this.important_Dates = importantDates;
     }
 
     public Semester(){
         this.courses = new Course[]{new Course()};
         this.batch = "(No Batch Info Found)";
-        this.importantDates = new Date[] {new Date()};
+        this.important_Dates = new Date[] {new Date()};
     }
 
     public void setCourses(Course[] courses) {
         this.courses = courses;
     }
 
-    public void setSemesterNo(int semesterNo) {
-        this.semesterNo = semesterNo;
+    public void setSemester_No(int semester_No) {
+        this.semester_No = semester_No;
     }
 
     public void setBatch(String batch) {
         this.batch = batch;
     }
 
-    public void setImportantDates(Date[] importantDates) {
-        this.importantDates = importantDates;
+    public void setImportant_Dates(Date[] important_Dates) {
+        this.important_Dates = important_Dates;
     }
 
     public Course[] getCourses() {
         return courses;
     }
 
-    public int getSemesterNo() {
-        return semesterNo;
+    public int getSemester_No() {
+        return semester_No;
     }
 
     public String getBatch() {
         return batch;
     }
 
-    public Date[] getImportantDates() {
-        return importantDates;
+    public Date[] getImportant_Dates() {
+        return important_Dates;
     }
 
     public void addCourse(Course c){
@@ -76,17 +77,17 @@ public class Semester implements DegreeObjectCommon, DegreeDateCommon{
     }
 
     public void addImportantDate(Date d){
-        if(this.importantDates == null)
-            this.importantDates = new Date[] {d};
+        if(this.important_Dates == null)
+            this.important_Dates = new Date[] {d};
         else {
-            Date[] importantDates = new Date[this.importantDates.length+1];
+            Date[] importantDates = new Date[this.important_Dates.length+1];
 
-            for(int i=0; i < this.importantDates.length; i++)
-                importantDates[i] = this.importantDates[i];
+            for(int i = 0; i < this.important_Dates.length; i++)
+                importantDates[i] = this.important_Dates[i];
 
             importantDates[importantDates.length-1] = d;
 
-            this.importantDates = importantDates;
+            this.important_Dates = importantDates;
         }
     }
 
@@ -96,7 +97,12 @@ public class Semester implements DegreeObjectCommon, DegreeDateCommon{
     }
 
     @Override
+    public Object[] getInnerDegreeObject() {
+        return courses;
+    }
+
+    @Override
     public Object getDateObject() {
-        return getImportantDates();
+        return getImportant_Dates();
     }
 }

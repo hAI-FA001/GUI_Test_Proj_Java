@@ -60,7 +60,7 @@ public class QuizzesPanel extends GeneralDegreeObjectPanel{
         super.showInfo(index);
         infoLabelOnHover = new JLabel(
                 String.format("<html><pre> %s<br/> %s</pre></html>",
-                        "Due On " + quizzes[index].getDueDate(),
+                        "Due On " + quizzes[index].getDue_Date(),
                         (quizzes[index].getTopics()!=null)?
                                 quizzes[index].getTopics().length + " Topics" : "0 Topics")
         );

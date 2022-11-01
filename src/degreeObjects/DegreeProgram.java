@@ -9,7 +9,7 @@ public class DegreeProgram implements DegreeObjectCommon{
     @Description("ignore in GetInfoPanel OptionsPanel")
     JPanel[] panelsSem;
 
-    @Description("ignore in GetInfoPanel")
+    @Description("ignore in GetInfoPanel, degree object")
     private Semester[] semesters;
     private int duration;
     private String name;
@@ -70,5 +70,10 @@ public class DegreeProgram implements DegreeObjectCommon{
     @Override
     public void setInnerDegreeObjectTo(Object o) {
         setSemesters((Semester[]) o);
+    }
+
+    @Override
+    public Object[] getInnerDegreeObject() {
+        return semesters;
     }
 }

@@ -5,6 +5,7 @@ import degreeObjects.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
 public class OptionsPanel extends JPanel{
@@ -301,49 +302,38 @@ public class OptionsPanel extends JPanel{
         for(int i=0; i < fieldsWithoutIgnoredFields.length; i++){
             infoLabels[i] = new JLabel();
 
-            String infoText = fieldsWithoutIgnoredFields[i].getName().toUpperCase() + ": ";
+            StringBuilder infoText = new StringBuilder();
 
-            if(fieldsWithoutIgnoredFields[i].getName().contains("semesters")) {
-                Semester[] semesters = ((DegreeProgram) o).getSemesters();
+            infoText.append(fieldsWithoutIgnoredFields[i].getName().toUpperCase().replace("_", " "))
+                    .append(": ");
 
-                if (semesters == null)
-                    infoText += "0";
-                else
-                    infoText += semesters.length;
-            }
-            else if(fieldsWithoutIgnoredFields[i].getName().contains("courses")){
-                Course[] courses = ((Semester)o).getCourses();
+            Annotation[] annotations = fieldsWithoutIgnoredFields[i].getAnnotations();
+            String[] secondAnnotation = new String[] {""};
+            if(annotations != null && annotations.length > 0)
+                secondAnnotation = annotations[0].toString().split(",");
 
-                if(courses == null)
-                    infoText += "0";
-                else
-                    infoText += courses.length;
-            }
-            else if(fieldsWithoutIgnoredFields[i].getName().toLowerCase().contains("assignments")){
-                Assignment[] assignemnts = ((Course)o).getAssignments();
+            if(secondAnnotation.length > 1 && secondAnnotation[1].toLowerCase().contains("deg")) {
+                Object[] degObj = ((DegreeObjectCommon) o).getInnerDegreeObject();
 
-                if(assignemnts == null)
-                    infoText += "0";
-                else
-                    infoText += assignemnts.length;
-            }
-            else if(fieldsWithoutIgnoredFields[i].getName().toLowerCase().contains("quizzes")){
-                Quiz[] quizzes = ((Course)o).getQuizzes();
+                if (o instanceof Course)
+                    degObj = (Object[]) (fieldsWithoutIgnoredFields[i].getName().toLowerCase().contains("quiz")?
+                                                ((Course) o).getInnerDegreeObject()[1] : ((Course) o).getInnerDegreeObject()[0]);
 
-                if(quizzes == null)
-                    infoText += "0";
-                else
-                    infoText += quizzes.length;
+                if (degObj == null)
+                    infoText.append("0");
+                else {
+                    infoText.append(degObj.length);
+                }
             }
             else {
                 fieldsWithoutIgnoredFields[i].setAccessible(true);
                 try {
-                    infoText += fieldsWithoutIgnoredFields[i].get(o);
+                    infoText.append(fieldsWithoutIgnoredFields[i].get(o));
                 } catch (IllegalAccessException e) {
                     throw new RuntimeException(e);
                 }
             }
-            infoLabels[i].setText(infoText);
+            infoLabels[i].setText(String.valueOf(infoText));
             infoLabels[i].setHorizontalAlignment(SwingConstants.CENTER);
 
             infoLabels[i].setForeground(new Color(0x774455));

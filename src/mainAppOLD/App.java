@@ -135,7 +135,7 @@ public class App extends JFrame implements ActionListener, MouseListener {
             new DatePanel(
                     degreesPanel.semestersPanels[degreesPanel.activePanelNo]
                             .semesters[degreesPanel.semestersPanels[degreesPanel.activePanelNo].activePanelNo]
-                            .getImportantDates()
+                            .getImportant_Dates()
             );
         }
         else if(e.getSource() == infoPanel.getSubmitBtn()){
@@ -158,13 +158,13 @@ public class App extends JFrame implements ActionListener, MouseListener {
 
                     if(addDatePanel != null && addDatePanel.getDates() != null && addDatePanel.getDates().length > 0) {
                         (semesterPanel.semesters[semesterPanel.semesters.length - 1])
-                                .setImportantDates(addDatePanel.getDates());
+                                .setImportant_Dates(addDatePanel.getDates());
                         addDatePanel.getDateFrame().dispose();
                         addDatePanel = null;
                     }
 
                     semesterPanel.addDegreeObject(this, "Semester-" +
-                            String.valueOf((semesterPanel.semesters[semesterPanel.semesters.length-1]).getSemesterNo()), 1);
+                            String.valueOf((semesterPanel.semesters[semesterPanel.semesters.length-1]).getSemester_No()), 1);
 
                     degreesPanel.degreePrograms[degreesPanel.activePanelNo].setSemesters(semesterPanel.semesters);
 
@@ -209,7 +209,7 @@ public class App extends JFrame implements ActionListener, MouseListener {
 
                         coursePanel.assignmentsPanels[coursePanel.activePanelNo]
                                 .assignments[coursePanel.assignmentsPanels[coursePanel.activePanelNo].activePanelNo]
-                                .setDueDate(addDatePanel.getDates()[0]);
+                                .setDue_Date(addDatePanel.getDates()[0]);
 
                         addDatePanel.getDateFrame().dispose();
                         addDatePanel = null;
@@ -235,9 +235,16 @@ public class App extends JFrame implements ActionListener, MouseListener {
                     if(addPanelForStrings != null && addPanelForStrings.getStoredStrings() != null
                             && addPanelForStrings.getStoredStrings().length > 0) {
 
+                        String[] strs = addPanelForStrings.getStoredStrings();
+
+                        Topic[] topics = new Topic[strs.length];
+
+                        for(int i=0; i < strs.length; i++)
+                            topics[i] = new Topic(strs[i]);
+
                         coursePanel.quizzesPanels[coursePanel.activePanelNo]
                                 .quizzes[coursePanel.assignmentsPanels[coursePanel.activePanelNo].activePanelNo]
-                                .setTopics(addPanelForStrings.getStoredStrings());
+                                .setTopics(topics);
 
                         addPanelForStrings.getAdderFrame().dispose();
                         addPanelForStrings = null;
@@ -246,7 +253,7 @@ public class App extends JFrame implements ActionListener, MouseListener {
 
                         coursePanel.quizzesPanels[coursePanel.activePanelNo]
                                 .quizzes[coursePanel.assignmentsPanels[coursePanel.activePanelNo].activePanelNo]
-                                .setDueDate(addDatePanel.getDates()[0]);
+                                .setDue_Date(addDatePanel.getDates()[0]);
 
                         addDatePanel.getDateFrame().dispose();
                         addDatePanel = null;

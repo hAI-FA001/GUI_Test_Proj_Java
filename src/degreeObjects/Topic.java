@@ -1,17 +1,17 @@
 package degreeObjects;
 
-public class Question {
+public class Topic {
     private String desc;
 
-    public Question(String desc) {
+    public Topic(String desc) {
         this.desc = desc;
     }
 
-    public Question(){
-        desc = null;
+    public Topic(){
+        desc = "(No Desc)";
     }
 
-    public Question(Question q){
+    public Topic(Topic q){
         this.desc = new String(q.desc);
     }
 
@@ -25,6 +25,6 @@ public class Question {
 
     @Override
     public Object clone(){
-        return new Question(this);
+        return new Topic(this);
     }
 }

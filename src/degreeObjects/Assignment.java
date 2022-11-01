@@ -4,22 +4,22 @@ import jdk.jfr.Description;
 
 public class Assignment implements DegreeObjectCommon, DegreeDateCommon{
 
-    @Description("make set button in GetInfoPanel")
+    @Description("make set button in GetInfoPanel, degree object")
     private Question[] questions;
-    private Date dueDate;
+    private Date due_Date;
 
     public Assignment(Question[] Question, Date dueDate) {
         this.questions = Question;
-        this.dueDate = dueDate;
+        this.due_Date = dueDate;
     }
     
     public Assignment(){
-        this.questions = new Question[] {new Question()};
+        this.questions = null;
     }
 
     public Assignment(Assignment a){
         this.questions = new Question[a.questions.length];
-        this.dueDate = new Date(a.dueDate.getDay(), a.dueDate.getMonth(), a.dueDate.getYear());
+        this.due_Date = new Date(a.due_Date.getDay(), a.due_Date.getMonth(), a.due_Date.getYear());
 
         for(int i=0; i<a.questions.length; i++)
             this.questions[i] = (Question) a.questions[i].clone();
@@ -29,16 +29,16 @@ public class Assignment implements DegreeObjectCommon, DegreeDateCommon{
         this.questions = Question;
     }
 
-    public void setDueDate(Date dueDate) {
-        this.dueDate = dueDate;
+    public void setDue_Date(Date due_Date) {
+        this.due_Date = due_Date;
     }
 
     public Question[] getQuestion() {
         return questions;
     }
 
-    public Date getDueDate() {
-        return dueDate;
+    public Date getDue_Date() {
+        return due_Date;
     }
 
     public void addQuestion(Question q){
@@ -69,7 +69,12 @@ public class Assignment implements DegreeObjectCommon, DegreeDateCommon{
     }
 
     @Override
+    public Object[] getInnerDegreeObject() {
+        return questions;
+    }
+
+    @Override
     public Object getDateObject() {
-        return getDueDate();
+        return getDue_Date();
     }
 }

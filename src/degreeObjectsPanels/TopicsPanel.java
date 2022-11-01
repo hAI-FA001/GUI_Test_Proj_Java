@@ -1,10 +1,12 @@
 package degreeObjectsPanels;
 
+import degreeObjects.Topic;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class TopicsPanel extends GeneralDegreeObjectPanel{
-    String[] topics;
+    Topic[] topics;
 
     TopicsPanel(int parentPanelNo){
         super();
@@ -17,36 +19,36 @@ public class TopicsPanel extends GeneralDegreeObjectPanel{
         super.incrementSizeBy(size);
 
         if(topics == null){
-            topics = new String[size];
+            topics = new Topic[size];
 
             for(int i=0; i < topics.length; i++){
-                topics[i] = new String();
+                topics[i] = new Topic();
             }
         }
         else {
-            String[] topics = new String[this.topics.length + size];
+            Topic[] topics = new Topic[this.topics.length + size];
 
             System.arraycopy(this.topics, 0, topics, 0, this.topics.length);
 
             for(int i=this.topics.length; i < topics.length; i++){
-                topics[i] = new String();
+                topics[i] = new Topic();
             }
 
             this.topics = topics;
         }
     }
 
-    public String[] getDegreeObjects(){
+    public Topic[] getDegreeObjects(){
         return topics;
     }
 
     @Override
     void setDegreeObjects(Object[] o) {
         if(this.topics.length == o.length)
-            this.topics = (String[]) o;
+            this.topics = (Topic[]) o;
         else {
             for(int i=this.topics.length-o.length; i < this.topics.length; i++)
-                this.topics[i] = (String) o[i];
+                this.topics[i] = (Topic) o[i];
         }
     }
 
@@ -62,7 +64,7 @@ public class TopicsPanel extends GeneralDegreeObjectPanel{
         super.showInfo(index);
         infoLabelOnHover = new JLabel(
                 String.format("<html><pre> %s</pre></html>",
-                        topics[index])
+                        topics[index].getDesc())
         );
         infoLabelOnHover.setFont(new Font(Font.SERIF, Font.PLAIN, 20));
         infoLabelOnHover.setForeground(new Color(0x774455));

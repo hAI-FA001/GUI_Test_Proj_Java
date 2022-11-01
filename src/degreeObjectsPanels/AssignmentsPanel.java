@@ -59,8 +59,8 @@ public class AssignmentsPanel extends GeneralDegreeObjectPanel{
         super.showInfo(index);
         infoLabelOnHover = new JLabel(
                 String.format("<html><pre> %s<br/> %s</pre></html>",
-                        "Due On " + assignments[index].getDueDate(),
-                        (assignments[index].getQuestion()!=null)?
+                        "Due On " + assignments[index].getDue_Date(),
+                        (assignments[index].getQuestion() != null)?
                                 assignments[index].getQuestion().length + " Questions" : "0 Questions")
         );
         infoLabelOnHover.setFont(new Font(Font.SERIF, Font.PLAIN, 20));

@@ -11,9 +11,9 @@ public class Course implements DegreeObjectCommon{
     private String name, code, desc;
     private int credit_hrs;
 
-    @Description("ignore in GetInfoPanel")
+    @Description("ignore in GetInfoPanel, degree object")
     private Assignment[] assignments;
-    @Description("ignore in GetInfoPanel")
+    @Description("ignore in GetInfoPanel, degree object")
     private Quiz[] quizzes;
 
     public Course(String name, String code, String desc, int credit_hrs, Assignment[] assignments, Quiz[] quizzes) {
@@ -140,5 +140,10 @@ public class Course implements DegreeObjectCommon{
             setAssignments((Assignment[]) o);
         else
             setQuizzes((Quiz[]) o);
+    }
+
+    @Override
+    public Object[] getInnerDegreeObject() {
+        return new Object[] {assignments, quizzes};
     }
 }

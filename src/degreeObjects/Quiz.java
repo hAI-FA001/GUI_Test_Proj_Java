@@ -4,49 +4,49 @@ import jdk.jfr.Description;
 
 public class Quiz implements DegreeObjectCommon, DegreeDateCommon{
 
-    @Description("make set button in GetInfoPanel")
-    private String[] topics;
-    private Date dueDate;
+    @Description("make set button in GetInfoPanel, degree object")
+    private Topic[] topics;
+    private Date due_Date;
 
-    public Quiz(String[] topics, Date dueDate) {
+    public Quiz(Topic[] topics, Date dueDate) {
         this.topics = topics;
-        this.dueDate = dueDate;
+        this.due_Date = dueDate;
     }
 
     public Quiz(){
-        this.dueDate = null;
-        this.topics = new String[]{"(No Topics Found)"};
+        this.due_Date = null;
+        this.topics = null;
     }
 
     public Quiz(Quiz q){
-        this.topics = new String[q.topics.length];
-        this.dueDate = new Date(q.getDueDate().getDay(), q.getDueDate().getMonth(), q.getDueDate().getYear());
+        this.topics = new Topic[q.topics.length];
+        this.due_Date = new Date(q.getDue_Date().getDay(), q.getDue_Date().getMonth(), q.getDue_Date().getYear());
 
         for(int i=0; i < q.topics.length; i++)
-            this.topics[i] = new String(q.topics[i]);
+            this.topics[i] = new Topic(q.topics[i]);
     }
 
-    public void setTopics(String[] topics) {
+    public void setTopics(Topic[] topics) {
         this.topics = topics;
     }
 
-    public void setDueDate(Date dueDate) {
-        this.dueDate = dueDate;
+    public void setDue_Date(Date due_Date) {
+        this.due_Date = due_Date;
     }
 
-    public String[] getTopics() {
+    public Topic[] getTopics() {
         return topics;
     }
 
-    public Date getDueDate() {
-        return dueDate;
+    public Date getDue_Date() {
+        return due_Date;
     }
 
-    public void addTopic(String topic){
+    public void addTopic(Topic topic){
         if(this.topics == null)
-            this.topics = new String[] {topic};
+            this.topics = new Topic[] {topic};
         else {
-            String[] topics = new String[this.topics.length + 1];
+            Topic[] topics = new Topic[this.topics.length + 1];
 
             for(int i=0; i < this.topics.length; i++)
                 topics[i] = this.topics[i];
@@ -64,11 +64,16 @@ public class Quiz implements DegreeObjectCommon, DegreeDateCommon{
 
     @Override
     public void setInnerDegreeObjectTo(Object o) {
-        setTopics((String[]) o);
+        setTopics((Topic[]) o);
+    }
+
+    @Override
+    public Object[] getInnerDegreeObject() {
+        return topics;
     }
 
     @Override
     public Object getDateObject() {
-        return getDueDate();
+        return getDue_Date();
     }
 }
