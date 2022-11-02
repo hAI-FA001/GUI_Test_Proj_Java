@@ -11,7 +11,7 @@ public class Semester implements DegreeObjectCommon, DegreeDateCommon{
 
     @Description("ignore in GetInfoPanel, degree object")
     private Course[] courses;
-    @Description("ignore in GetInfoPanel")
+    @Description("ignore in GetInfoPanel, main info")
     private int semester_No;
     private String batch;
     private Date[] important_Dates;

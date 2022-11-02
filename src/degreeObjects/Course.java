@@ -8,7 +8,9 @@ public class Course implements DegreeObjectCommon{
     @Description("ignore in GetInfoPanel OptionsPanel")
     JPanel[] panelsAssignments, panelsQuizzes;
 
-    private String name, code, desc;
+    @Description("main info")
+    private String name;
+    private String code, desc;
     private int credit_hrs;
 
     @Description("ignore in GetInfoPanel, degree object")

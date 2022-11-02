@@ -12,6 +12,7 @@ public class DegreeProgram implements DegreeObjectCommon{
     @Description("ignore in GetInfoPanel, degree object")
     private Semester[] semesters;
     private int duration;
+    @Description("main info")
     private String name;
 
     @Description("ignore in GetInfoPanel OptionsPanel")
