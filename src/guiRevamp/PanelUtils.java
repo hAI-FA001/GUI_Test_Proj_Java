@@ -15,47 +15,14 @@ public class PanelUtils {
     public static void goBackOneDepth(GeneralDegreeObjectPanel panel1, GeneralDegreeObjectPanel panel2,
                                       App parentFrame, boolean isInQuestionsPanel){
 
-        int indexForCardLayout;
-
-        switch(parentFrame.curPanelDepth){
-            case 1: {
-                parentFrame.optionsPanel.setBtnEnabled(true, false, false, false);
-
-                indexForCardLayout = 0;
-            }
-            break;
-            case 2: {
-                parentFrame.optionsPanel.setBtnEnabled(false, true, false, true);
-
-                indexForCardLayout = 1;
-            }
-            break;
-            case 3: {
-                parentFrame.optionsPanel.setBtnsSubContainerForDegree();
-                parentFrame.optionsPanel.setBtnEnabled(false, false, true, true);
-
-                indexForCardLayout = 2;
-            }
-            break;
-            case 4: {
-                if(isInQuestionsPanel)
-                    parentFrame.optionsPanel.setBtnEnabled(true, false, false, true);
-                else
-                    parentFrame.optionsPanel.setBtnEnabled(false, true, false, true);
-
-                indexForCardLayout = isInQuestionsPanel? 3 : 4;
-            }
-            break;
-            default:
-                System.out.println("Error! Unknown Panel Depth");
-                return;
-        }
+        int indexForCardLayout = isInQuestionsPanel? parentFrame.curPanelDepth - 1 : parentFrame.curPanelDepth;
 
         setInfoLabels(panel1.getDegreeObjects()[panel1.activePanelNo], parentFrame);
-        ((CardLayout) parentFrame.cardsLayoutTest.getLayout())
-                .show(parentFrame.cardsLayoutTest, App.strsForCardLayout[indexForCardLayout]);
 
-        parentFrame.cardsLayoutTest.validate();
+        ((CardLayout) parentFrame.mainContainerForDegreePanels.getLayout())
+                .show(parentFrame.mainContainerForDegreePanels, App.strsForCardLayout[indexForCardLayout]);
+
+        parentFrame.mainContainerForDegreePanels.validate();
     }
 
     public static void goIntoNextDepth(GeneralDegreeObjectPanel panel1, GeneralDegreeObjectPanel panel2,
@@ -65,57 +32,28 @@ public class PanelUtils {
         int indexForCardLayout;
 
         switch(parentFrame.curPanelDepth){
-            case 1: {
-                parentFrame.optionsPanel.setBtnEnabled(false, true, false, true);
-
-                indexForCardLayout = 1;
-            }
+            case 1:
+            case 2:
+                indexForCardLayout = parentFrame.curPanelDepth;
             break;
-            case 2: {
-                parentFrame.optionsPanel.setBtnEnabled(false, false, true, true);
-
-                indexForCardLayout = 2;
-            }
+            case 3:
+                indexForCardLayout = clickedAssignmentPanel? parentFrame.curPanelDepth : parentFrame.curPanelDepth+1;
             break;
-            case 3: {
-                parentFrame.optionsPanel.setBtnsSubContainerForCourse();
-                JButton first, second;
-
-                if(clickedAssignmentPanel) {
-                    first = parentFrame.optionsPanel.addTopicBtn;
-                    second = parentFrame.optionsPanel.addQuestionBtn;
-                    parentFrame.optionsPanel.setBtnEnabled(true, false, false, true);
-                }
-                else {
-                    first = parentFrame.optionsPanel.addQuestionBtn;
-                    second = parentFrame.optionsPanel.addTopicBtn;
-                    parentFrame.optionsPanel.setBtnEnabled(false, true, false, true);
-                }
-
-                parentFrame.optionsPanel.swapFirstWithSecondBtn(first, second);
-                indexForCardLayout = clickedAssignmentPanel? 3 : 4;
-            }
-            break;
-            case 4: {
-                if(clickedAssignmentPanel)
-                    parentFrame.optionsPanel.setBtnEnabled(false, false, true, true);
-                else
-                    parentFrame.optionsPanel.setBtnEnabled(false, false, true, true);
-
-                indexForCardLayout = clickedAssignmentPanel? 5 : 6;
-            }
+            case 4:
+                indexForCardLayout = clickedAssignmentPanel? parentFrame.curPanelDepth+1 : parentFrame.curPanelDepth+2;
             break;
             default:
                 return;
         }
 
         setInfoLabels(panel1.getDegreeObjects()[index], parentFrame);
-        parentFrame.cardsLayoutTest.add(panel2.scrollPane, strsForCardLayout[indexForCardLayout]);
 
-        ((CardLayout) parentFrame.cardsLayoutTest.getLayout())
-                .show(parentFrame.cardsLayoutTest, strsForCardLayout[indexForCardLayout]);
+        parentFrame.mainContainerForDegreePanels.add(panel2.scrollPane, strsForCardLayout[indexForCardLayout]);
 
-        parentFrame.cardsLayoutTest.validate();
+        ((CardLayout) parentFrame.mainContainerForDegreePanels.getLayout())
+                .show(parentFrame.mainContainerForDegreePanels, strsForCardLayout[indexForCardLayout]);
+
+        parentFrame.mainContainerForDegreePanels.validate();
     }
 
     public static void setInfoLabels(Object obj, App parentFrame){

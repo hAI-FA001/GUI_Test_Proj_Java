@@ -2,6 +2,6 @@ package guiRevamp;
 
 public class Main {
     public static void main(String[] args) {
-        new App(1);
+        new App();
     }
 }

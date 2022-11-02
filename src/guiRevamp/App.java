@@ -17,154 +17,38 @@ import java.awt.event.MouseListener;
 public class App extends JFrame implements ActionListener, MouseListener {
 
         DegreesPanel degreesPanel;
-        OptionsPanel optionsPanel;
         ViewInfoPanel viewInfoPanel;
-        JButton[] btns = new JButton[] {new JButton("Back"), new JButton("Favourites"), new JButton("Search"),
-                        new JButton("Edit"), new JButton("Favourite"), new JButton("Add Note"),
-                        new JButton("Add")};
+        MainPanels mainPanels;
         static GetInfoPanel infoPanel = new GetInfoPanel();
         static DatePanel addDatePanel = null;
         static AddPanelForStrings addPanelForStrings = null;
-        public JPanel cardsLayoutTest;
+        public JPanel mainContainerForDegreePanels;
         static String[] strsForCardLayout = {"degree", "semester", "course", "assignment", "quiz", "question", "topics"};
         int curPanelDepth;
 
-
         App(){
-            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            setSize(new Dimension(750, 750));
-            setLocationRelativeTo(null);
-            setLayout(new BorderLayout());
-
-
-            optionsPanel = new OptionsPanel(getWidth(), getHeight(), this);
-            degreesPanel = new DegreesPanel();
-
-
-
-            cardsLayoutTest = new JPanel();
-            cardsLayoutTest.setLayout(new CardLayout());
-            cardsLayoutTest.add(degreesPanel.scrollPane, strsForCardLayout[0]);
-
-            add(cardsLayoutTest, BorderLayout.CENTER);
-            add(optionsPanel, BorderLayout.WEST);
-
-            pack();
-
-            setVisible(true);
-
-            validate();
-        }
-
-        App(int paramForNoReason){
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //            setLocationRelativeTo(null);
             setLayout(new BorderLayout());
 
-            final float[] PANEL_RATIOS = {3F/32, 9F/16, 11F/32};
-            final int PANEL_ABOVE_HEIGHT = (int) (PANEL_RATIOS[0]*FRAME_HEIGHT),
-                    PANEL_CENTRE_HEIGHT = (int) (PANEL_RATIOS[1]*FRAME_HEIGHT),
-                    PANEL_BELOW_HEIGHT = (int) (PANEL_RATIOS[2]*FRAME_HEIGHT);
-            ////////////////////////////////////////////////////////////////////////
-            JPanel panelAbove = new JPanel(), panelAtCentre = new JPanel(), panelBelow = new JPanel();
-
-            panelAbove.setLayout(new BorderLayout());
-            panelAtCentre.setLayout(new BorderLayout());
-            panelBelow.setLayout(new BorderLayout());
-
-            panelAbove.setPreferredSize(new Dimension(FRAME_WIDTH, PANEL_ABOVE_HEIGHT));
-            panelAtCentre.setPreferredSize(new Dimension(FRAME_WIDTH, PANEL_CENTRE_HEIGHT));
-            panelBelow.setPreferredSize(new Dimension(FRAME_WIDTH, PANEL_BELOW_HEIGHT));
-
-            panelAbove.setBackground(new Color(0x771144));
-            panelAtCentre.setBackground(new Color(0xAD1A97));
-            panelBelow.setBackground(new Color(0xAD528C));
-
-            ////////////////////////////////////////////////////////////////////////
-            JPanel panelAboveAbove = new JPanel(), panelAboveBelow = new JPanel(),
-                    panelCentreBelow = new JPanel();
-
-            panelAboveBelow.setLayout(new GridBagLayout());
-            panelCentreBelow.setLayout(new GridBagLayout());
-
-            panelAboveAbove.setPreferredSize(new Dimension(FRAME_WIDTH, PANEL_ABOVE_HEIGHT/4));
-            panelAboveBelow.setPreferredSize(new Dimension(FRAME_WIDTH, 3*PANEL_ABOVE_HEIGHT/4));
-            panelCentreBelow.setPreferredSize(new Dimension(FRAME_WIDTH, PANEL_CENTRE_HEIGHT/8));
-
-            panelAboveAbove.setBackground(new Color(0x4A384D));
-            panelAboveBelow.setBackground(new Color(0xDABFD2));
-            panelCentreBelow.setBackground(new Color(0xECBFD0));
-
-
-            ////////////////////////////////////////////////////////////////////////
-
-            for(JButton btn : btns)
-                btn.addActionListener(this);
-
-            ////////////////////////////////////////////////////////////////////////
-            optionsPanel = new OptionsPanel(getWidth(), getHeight(), this);
+            mainPanels = new MainPanels(this);
             degreesPanel = new DegreesPanel();
-
             viewInfoPanel = new ViewInfoPanel(this);
 
 
-            cardsLayoutTest = new JPanel();
-            cardsLayoutTest.setLayout(new CardLayout());
-            cardsLayoutTest.add(degreesPanel.scrollPane, strsForCardLayout[0]);
+            mainContainerForDegreePanels = new JPanel();
+            mainContainerForDegreePanels.setLayout(new CardLayout());
+            mainContainerForDegreePanels.add(degreesPanel.scrollPane, strsForCardLayout[0]);
 
-//            add(cardsLayoutTest, BorderLayout.CENTER);
-//            add(optionsPanel, BorderLayout.WEST);
+            mainPanels.panelAtCentre.add(mainContainerForDegreePanels, BorderLayout.CENTER);
+            mainPanels.panelBelow.add(viewInfoPanel, BorderLayout.CENTER);
 
-
-            ////////////////////////////////////////////////////////////////////////
-
-            GridBagConstraints c = new GridBagConstraints();
-            c.insets = new Insets(PANEL_ABOVE_HEIGHT/8, (int) Math.ceil(1.3*FRAME_WIDTH/100),
-                    PANEL_ABOVE_HEIGHT/8, (int) Math.ceil(1.3*FRAME_WIDTH/100));
-            c.gridwidth = FRAME_WIDTH/3;
-            c.ipadx = FRAME_WIDTH/16;
-            c.ipady = FRAME_HEIGHT/16;
-            c.weighty = 1;
-            c.weightx = 1;
-
-            c.anchor = GridBagConstraints.LINE_START;
-            panelAboveBelow.add(btns[GO_BACK], c);
-            c.anchor = GridBagConstraints.CENTER;
-            panelAboveBelow.add(btns[FAVS], c);
-            c.anchor = GridBagConstraints.LINE_END;
-            panelAboveBelow.add(btns[SEARCH], c);
-
-            GridBagConstraints c2 = new GridBagConstraints();
-            c2.insets = new Insets(PANEL_CENTRE_HEIGHT/64, (int) Math.ceil(1.3*FRAME_WIDTH/100),
-                    PANEL_CENTRE_HEIGHT/64, (int) Math.ceil(1.3*FRAME_WIDTH/100));
-            c2.gridwidth = FRAME_WIDTH/4;
-            c2.ipadx = FRAME_WIDTH/16;
-            c2.ipady = PANEL_CENTRE_HEIGHT/16;
-            c2.weighty = 1;
-            c2.weightx = 1;
-
-            panelCentreBelow.add(btns[EDIT], c2);
-            panelCentreBelow.add(btns[FAV], c2);
-            panelCentreBelow.add(btns[ADD_NOTE], c2);
-            panelCentreBelow.add(btns[ADD_BTN], c2);
-
-            panelAbove.add(panelAboveAbove, BorderLayout.NORTH);
-            panelAbove.add(panelAboveBelow, BorderLayout.CENTER);
-            panelAtCentre.add(cardsLayoutTest, BorderLayout.CENTER);
-            panelAtCentre.add(panelCentreBelow, BorderLayout.SOUTH);
-            panelBelow.add(viewInfoPanel, BorderLayout.CENTER);
-
-
-
-            ////////////////////////////////////////////////////////////////////////
-            add(panelAbove, BorderLayout.NORTH);
-            add(panelAtCentre, BorderLayout.CENTER);
-            add(panelBelow, BorderLayout.SOUTH);
+            add(mainPanels.panelAbove, BorderLayout.NORTH);
+            add(mainPanels.panelAtCentre, BorderLayout.CENTER);
+            add(mainPanels.panelBelow, BorderLayout.SOUTH);
 
             pack();
-
             setVisible(true);
-
             validate();
         }
 
@@ -224,7 +108,7 @@ public class App extends JFrame implements ActionListener, MouseListener {
                  if (e.getSource() == infoPanel.getDatesBtn()) {
                     PanelUtils.handleInputDatePanel(this);
                 }
-                 else if (e.getSource() == btns[ADD_BTN]) {
+                 else if (e.getSource() == mainPanels.optionButtons.btns[ADD_BTN]) {
                      panel.incrementSizeBy(1);
                      infoPanel = new GetInfoPanel(degObj, this);
                  }
@@ -239,7 +123,7 @@ public class App extends JFrame implements ActionListener, MouseListener {
                     addPanelForStrings.getAdderFrame().setVisible(false);
                     addPanelForStrings.getAdderFrame().setEnabled(false);
                 }
-                 else if (e.getSource() == optionsPanel.viewDatesBtn) {
+                 else if (e.getSource() == viewInfoPanel.viewDatesBtn) {
 
                      PanelUtils.showDates((parentPanel != null &&
                              parentPanel.getDegreeObjects()[0] instanceof DegreeDateCommon)? parentPanel : panel);
@@ -309,7 +193,7 @@ public class App extends JFrame implements ActionListener, MouseListener {
                          ((DegreeObjectCommon) parentPanel.getDegreeObjects()[parentPanel.activePanelNo])
                                  .setInnerDegreeObjectTo(panel.getDegreeObjects());
                  }
-                 else if (e.getSource() == btns[GO_BACK]) {
+                 else if (e.getSource() == mainPanels.optionButtons.btns[GO_BACK]) {
 
                     if (curPanelDepth >= 1) {
                         GeneralDegreeObjectPanel toGoTo, toGoFrom;
