@@ -216,7 +216,7 @@ public class CoursesPanel extends GeneralDegreeObjectPanel {
     @Override
     public void hideInfo(int index){
         super.hideInfo(index);
-        degreeObjectPanels[index].remove(infoLabelOnHover);
+
         goToAssignmentPanel[index].remove(assignmentInfoLabelOnHover);
         goToQuizPanel[index].remove(quizInfoLabelOnHover);
         validate();

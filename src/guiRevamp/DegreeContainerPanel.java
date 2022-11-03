@@ -12,6 +12,7 @@ public class DegreeContainerPanel extends JPanel {
     DegreesPanel degreesPanel;
     static String[] strsForCardLayout = {"degree", "semester", "course", "assignment", "quiz", "question", "topics"};
     int curPanelDepth;
+    final int MAX_ALLOWED_PANEL_DEPTH = 4;
     final App parentApp;
 
     DegreeContainerPanel(App parentApp) {
@@ -88,6 +89,28 @@ public class DegreeContainerPanel extends JPanel {
         return new Object[]{panel, parentPanel, degObj};
     }
 
+    void handleClick(MouseEvent e){
+
+        GeneralDegreeObjectPanel src;
+        int index;
+        boolean isPanelHighlighted;
+
+        if(((JPanel) e.getSource()).getParent().getParent().getParent() instanceof CoursesPanel) {
+            src = (GeneralDegreeObjectPanel) ((JPanel) e.getSource()).getParent().getParent().getParent();
+            index = Integer.parseInt(((JPanel) e.getSource()).getName().split("-")[1]);
+        }
+        else {
+            src = (GeneralDegreeObjectPanel) ((JPanel) e.getSource()).getParent();
+            index = Integer.parseInt(((JPanel) e.getSource()).getName());
+        }
+        isPanelHighlighted = src.isPanelAtIndexHighlighted(index);
+
+        if(isPanelHighlighted && curPanelDepth < MAX_ALLOWED_PANEL_DEPTH)
+            goIntoNextDepth(e, index, src);
+        else
+            src.highlightPanelAt(index);
+    }
+
     void goBackOneDepth() {
         SemestersPanel semPanel = getActiveSemesterPanel();
         CoursesPanel courPanel = getActiveCoursePanel();
@@ -124,33 +147,22 @@ public class DegreeContainerPanel extends JPanel {
         }
     }
 
-    void goIntoNextDepth(MouseEvent e){
+    void goIntoNextDepth(MouseEvent e, int index, GeneralDegreeObjectPanel src){
 
         GeneralDegreeObjectPanel toGoFrom, toGoTo;
         boolean clickedAssignmentPanel;
-        int index;
 
         ++curPanelDepth;
 
-
-        if(((JPanel) e.getSource()).getParent().getParent().getParent() instanceof CoursesPanel){
-
-            toGoFrom = (GeneralDegreeObjectPanel) ((JPanel) e.getSource()).getParent().getParent().getParent();
-            index = Integer.parseInt(((JPanel) e.getSource()).getName().split("-")[1]);
-
-            ((CoursesPanel) toGoFrom).clickedAssignmentPanel =
-                    e.getSource() == ((CoursesPanel) toGoFrom).goToAssignmentPanel[index];
-
-            toGoTo = (GeneralDegreeObjectPanel) toGoFrom.getInnerPanels()[index];
-            clickedAssignmentPanel = ((CoursesPanel) toGoFrom).clickedAssignmentPanel;
+        if(src instanceof CoursesPanel) {
+            ((CoursesPanel) src).clickedAssignmentPanel = e.getSource() == ((CoursesPanel) src).goToAssignmentPanel[index];
+            clickedAssignmentPanel = ((CoursesPanel) src).clickedAssignmentPanel;
         }
-        else {
-            index = Integer.parseInt(((JPanel) e.getSource()).getName());
-            clickedAssignmentPanel = ((JPanel) e.getSource()).getParent() instanceof AssignmentsPanel;
+        else
+            clickedAssignmentPanel = src instanceof AssignmentsPanel;
 
-            toGoFrom = (GeneralDegreeObjectPanel) ((JPanel) e.getSource()).getParent();
-            toGoTo = (GeneralDegreeObjectPanel) toGoFrom.getInnerPanels()[index];
-        }
+        toGoFrom = src;
+        toGoTo = (GeneralDegreeObjectPanel) toGoFrom.getInnerPanels()[index];
 
         PanelUtils.goIntoNextDepth(toGoFrom, toGoTo, this,
                 index, clickedAssignmentPanel);

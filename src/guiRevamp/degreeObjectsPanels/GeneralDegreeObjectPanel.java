@@ -12,6 +12,7 @@ public class GeneralDegreeObjectPanel extends JPanel {
     int nextSeqNum = 1, parentPanelNo;
     final int numComponentsToDivideBy = 2, panelWidth = FRAME_WIDTH, panelHeight = 63*FRAME_HEIGHT/128;
     public JPanel[] degreeObjectPanels;
+    public int curHighlightedPanel = -1;
     JLabel[] degreeObjectInfoLabels;
     JLabel infoLabelOnHover;
     public JScrollPane scrollPane;
@@ -195,5 +196,22 @@ public class GeneralDegreeObjectPanel extends JPanel {
 
     public void showInfo(int index) {}
 
-    public void hideInfo(int index) {}
+    public void hideInfo(int index) {
+        degreeObjectPanels[index].remove(infoLabelOnHover);
+        validate();
+        repaint();
+    }
+
+    public boolean isPanelAtIndexHighlighted(int index){
+        return index == curHighlightedPanel;
+    }
+    public void highlightPanelAt(int index){
+
+        if(curHighlightedPanel != -1)
+            degreeObjectPanels[curHighlightedPanel].setBorder(BorderFactory.createLineBorder(Color.PINK, 3));
+
+        curHighlightedPanel = index;
+
+        degreeObjectPanels[curHighlightedPanel].setBorder(BorderFactory.createLineBorder(Color.MAGENTA, 7));
+    }
 }

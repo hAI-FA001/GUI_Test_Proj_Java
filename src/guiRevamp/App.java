@@ -151,7 +151,8 @@ public class App extends JFrame implements ActionListener, MouseListener {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            mainPanels.subPanels.mainContainerForDegreePanels.goIntoNextDepth(e);
+
+            mainPanels.subPanels.mainContainerForDegreePanels.handleClick(e);
         }
 
         @Override

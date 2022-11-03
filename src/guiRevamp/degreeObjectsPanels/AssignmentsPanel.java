@@ -72,12 +72,4 @@ public class AssignmentsPanel extends GeneralDegreeObjectPanel {
         degreeObjectPanels[index].add(infoLabelOnHover, BorderLayout.CENTER);
         validate();
     }
-
-    @Override
-    public void hideInfo(int index){
-        super.hideInfo(index);
-        degreeObjectPanels[index].remove(infoLabelOnHover);
-        validate();
-        repaint();
-    }
 }
