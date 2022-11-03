@@ -9,51 +9,54 @@ import morePanels.DatePanel;
 import javax.swing.*;
 import java.awt.*;
 
-import static guiRevamp.App.strsForCardLayout;
-
 public class PanelUtils {
-    public static void goBackOneDepth(GeneralDegreeObjectPanel panel1, GeneralDegreeObjectPanel panel2,
-                                      App parentFrame, boolean isInQuestionsPanel){
+    public static void goBackOneDepth(GeneralDegreeObjectPanel panel1,
+                                      DegreeContainerPanel degreeContainerPanel, boolean isInQuestionsPanel){
 
-        int indexForCardLayout = isInQuestionsPanel? parentFrame.curPanelDepth - 1 : parentFrame.curPanelDepth;
+        int indexForCardLayout = degreeContainerPanel.curPanelDepth-1;
 
-        setInfoLabels(panel1.getDegreeObjects()[panel1.activePanelNo], parentFrame);
+        if(indexForCardLayout >= 3 && !isInQuestionsPanel)
+            indexForCardLayout++;
 
-        ((CardLayout) parentFrame.mainContainerForDegreePanels.getLayout())
-                .show(parentFrame.mainContainerForDegreePanels, App.strsForCardLayout[indexForCardLayout]);
+        setInfoLabels(panel1.getDegreeObjects()[panel1.activePanelNo], degreeContainerPanel.parentApp);
 
-        parentFrame.mainContainerForDegreePanels.validate();
+        ((CardLayout) degreeContainerPanel.getLayout())
+                .show(degreeContainerPanel, DegreeContainerPanel.strsForCardLayout[indexForCardLayout]);
+
+        degreeContainerPanel.validate();
     }
 
     public static void goIntoNextDepth(GeneralDegreeObjectPanel panel1, GeneralDegreeObjectPanel panel2,
-                                       App parentFrame, int index, boolean clickedAssignmentPanel){
+                                       DegreeContainerPanel degreeContainerPanel, int index, boolean clickedAssignmentPanel){
 
         panel1.activePanelNo = index;
         int indexForCardLayout;
 
-        switch(parentFrame.curPanelDepth){
+        switch(degreeContainerPanel.curPanelDepth){
             case 1:
             case 2:
-                indexForCardLayout = parentFrame.curPanelDepth;
+                indexForCardLayout = degreeContainerPanel.curPanelDepth;
             break;
             case 3:
-                indexForCardLayout = clickedAssignmentPanel? parentFrame.curPanelDepth : parentFrame.curPanelDepth+1;
+                indexForCardLayout = clickedAssignmentPanel?
+                        degreeContainerPanel.curPanelDepth : degreeContainerPanel.curPanelDepth+1;
             break;
             case 4:
-                indexForCardLayout = clickedAssignmentPanel? parentFrame.curPanelDepth+1 : parentFrame.curPanelDepth+2;
+                indexForCardLayout = clickedAssignmentPanel?
+                        degreeContainerPanel.curPanelDepth+1 : degreeContainerPanel.curPanelDepth+2;
             break;
             default:
                 return;
         }
 
-        setInfoLabels(panel1.getDegreeObjects()[index], parentFrame);
+        setInfoLabels(panel1.getDegreeObjects()[index], degreeContainerPanel.parentApp);
 
-        parentFrame.mainContainerForDegreePanels.add(panel2.scrollPane, strsForCardLayout[indexForCardLayout]);
+        degreeContainerPanel.add(panel2.scrollPane, DegreeContainerPanel.strsForCardLayout[indexForCardLayout]);
 
-        ((CardLayout) parentFrame.mainContainerForDegreePanels.getLayout())
-                .show(parentFrame.mainContainerForDegreePanels, strsForCardLayout[indexForCardLayout]);
+        ((CardLayout) degreeContainerPanel.getLayout())
+                .show(degreeContainerPanel, DegreeContainerPanel.strsForCardLayout[indexForCardLayout]);
 
-        parentFrame.mainContainerForDegreePanels.validate();
+        degreeContainerPanel.validate();
     }
 
     public static void setInfoLabels(Object obj, App parentFrame){

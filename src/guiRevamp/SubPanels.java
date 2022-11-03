@@ -8,8 +8,9 @@ import static guiRevamp.constants.*;
 public class SubPanels {
 
     final JPanel panelAboveAbove, panelAboveBelow, panelCentreBelow;
+    DegreeContainerPanel mainContainerForDegreePanels;
 
-    SubPanels(){
+    SubPanels(App parentApp){
         panelAboveAbove = new JPanel();
         panelAboveBelow = new JPanel();
         panelCentreBelow = new JPanel();
@@ -24,5 +25,7 @@ public class SubPanels {
         panelAboveAbove.setBackground(new Color(0x4A384D));
         panelAboveBelow.setBackground(new Color(0xDABFD2));
         panelCentreBelow.setBackground(new Color(0xECBFD0));
+
+        mainContainerForDegreePanels = new DegreeContainerPanel(parentApp);
     }
 }

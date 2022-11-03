@@ -1,4 +1,4 @@
-package App;
+package AppALSO_OLD;
 
 import degreeObjects.Date;
 import degreeObjects.DegreeDateCommon;
@@ -9,7 +9,7 @@ import morePanels.DatePanel;
 import javax.swing.*;
 import java.awt.*;
 
-import static App.App.strsForCardLayout;
+import static AppALSO_OLD.App.strsForCardLayout;
 
 public class PanelUtils {
     public static void goBackOneDepth(GeneralDegreeObjectPanel panel1, GeneralDegreeObjectPanel panel2,

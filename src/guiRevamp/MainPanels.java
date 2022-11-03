@@ -9,10 +9,13 @@ public class MainPanels {
 
 
     final JPanel panelAbove, panelAtCentre, panelBelow;
+    final App parentApp;
     SubPanels subPanels;
     OptionButtons optionButtons;
 
-    MainPanels(JFrame parentFrame){
+    MainPanels(App parentApp){
+        this.parentApp = parentApp;
+
         panelAbove = new JPanel();
         panelAtCentre = new JPanel();
         panelBelow = new JPanel();
@@ -29,8 +32,8 @@ public class MainPanels {
         panelAtCentre.setBackground(new Color(0xAD1A97));
         panelBelow.setBackground(new Color(0xAD528C));
 
-        subPanels = new SubPanels();
-        optionButtons = new OptionButtons(parentFrame);
+        subPanels = new SubPanels(parentApp);
+        optionButtons = new OptionButtons(parentApp);
 
         addStuff();
     }
@@ -42,6 +45,7 @@ public class MainPanels {
         panelAbove.add(subPanels.panelAboveAbove, BorderLayout.NORTH);
         panelAbove.add(subPanels.panelAboveBelow, BorderLayout.CENTER);
         panelAtCentre.add(subPanels.panelCentreBelow, BorderLayout.SOUTH);
+        panelAtCentre.add(subPanels.mainContainerForDegreePanels, BorderLayout.CENTER);
     }
 
     private void addBtns() {

@@ -16,32 +16,24 @@ import java.awt.event.MouseListener;
 
 public class App extends JFrame implements ActionListener, MouseListener {
 
-        DegreesPanel degreesPanel;
         ViewInfoPanel viewInfoPanel;
         MainPanels mainPanels;
         static GetInfoPanel infoPanel = new GetInfoPanel();
         static DatePanel addDatePanel = null;
         static AddPanelForStrings addPanelForStrings = null;
-        public JPanel mainContainerForDegreePanels;
-        static String[] strsForCardLayout = {"degree", "semester", "course", "assignment", "quiz", "question", "topics"};
-        int curPanelDepth;
 
         App(){
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //            setLocationRelativeTo(null);
             setLayout(new BorderLayout());
 
+
             mainPanels = new MainPanels(this);
-            degreesPanel = new DegreesPanel();
             viewInfoPanel = new ViewInfoPanel(this);
 
 
-            mainContainerForDegreePanels = new JPanel();
-            mainContainerForDegreePanels.setLayout(new CardLayout());
-            mainContainerForDegreePanels.add(degreesPanel.scrollPane, strsForCardLayout[0]);
-
-            mainPanels.panelAtCentre.add(mainContainerForDegreePanels, BorderLayout.CENTER);
             mainPanels.panelBelow.add(viewInfoPanel, BorderLayout.CENTER);
+
 
             add(mainPanels.panelAbove, BorderLayout.NORTH);
             add(mainPanels.panelAtCentre, BorderLayout.CENTER);
@@ -55,218 +47,111 @@ public class App extends JFrame implements ActionListener, MouseListener {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            GeneralDegreeObjectPanel panel = null, parentPanel = null;
-            Object degObj = null;
+            GeneralDegreeObjectPanel panel, parentPanel;
+            Object degObj;
 
-            SemestersPanel semPanel = null;
-            CoursesPanel courPanel = null;
-            if(degreesPanel.semestersPanels != null) {
-                    semPanel = degreesPanel.semestersPanels[degreesPanel.activePanelNo];
+            Object[] returned = mainPanels.subPanels.mainContainerForDegreePanels.getActivePanelsAndDegObj();
 
-                if (semPanel.coursesPanels != null)
-                    courPanel = semPanel.coursesPanels[semPanel.activePanelNo];
-            }
+            panel = (GeneralDegreeObjectPanel) returned[0];
 
-            switch (curPanelDepth){
-                case 0:
-                    panel = degreesPanel;
-                    degObj = new DegreeProgram();
-                    break;
-                case 1:
-                    parentPanel = degreesPanel;
-                    panel = semPanel;
-                    degObj = new Semester();
-                    break;
-                case 2:
-                    parentPanel = semPanel;
-                    panel = courPanel;
-                    degObj = new Course();
-                    break;
-                case 3:
-                    parentPanel = courPanel;
-                    panel = (GeneralDegreeObjectPanel) courPanel.getInnerPanels()[courPanel.activePanelNo];
-                    degObj = courPanel.clickedAssignmentPanel? new Assignment() : new Quiz();
-                    break;
-                case 4:
-                    GeneralDegreeObjectPanel assignmentOrQuizPanel =
-                            (GeneralDegreeObjectPanel) courPanel.getInnerPanels()[courPanel.activePanelNo];
-
-                    parentPanel = assignmentOrQuizPanel;
-                    panel = (GeneralDegreeObjectPanel) assignmentOrQuizPanel
-                            .getInnerPanels()[assignmentOrQuizPanel.activePanelNo];
-                    degObj = courPanel.clickedAssignmentPanel? new Question() : new Topic();
-                    break;
-                default:
-                    System.out.println("Error! Unknown depth. Cannot exceed 5.");
-            }
-
-            if(panel == null)
+            if (panel == null)
                 return;
 
-            if(e.getSource() instanceof  JButton) {
-                String btnText = ((JButton) e.getSource()).getText().toLowerCase();
-                 if (e.getSource() == infoPanel.getDatesBtn()) {
+            parentPanel = (GeneralDegreeObjectPanel) returned[1];
+            degObj = returned[2];
+
+            if (e.getSource() instanceof JButton) {
+
+                if (e.getSource() == infoPanel.getDatesBtn()) {
                     PanelUtils.handleInputDatePanel(this);
-                }
-                 else if (e.getSource() == mainPanels.optionButtons.btns[ADD_BTN]) {
-                     panel.incrementSizeBy(1);
-                     infoPanel = new GetInfoPanel(degObj, this);
-                 }
-                 else if (addDatePanel != null && e.getSource() == addDatePanel.getDoneBtn()) {
+                } else if (e.getSource() == mainPanels.optionButtons.btns[ADD_BTN]) {
+                    panel.incrementSizeBy(1);
+                    infoPanel = new GetInfoPanel(degObj, this);
+                } else if (addDatePanel != null && e.getSource() == addDatePanel.getDoneBtn()) {
                     addDatePanel.getDateFrame().setVisible(false);
                     addDatePanel.getDateFrame().setEnabled(false);
-                }
-                 else if (e.getSource() == infoPanel.getSetBtn()) {
+                } else if (e.getSource() == infoPanel.getSetBtn()) {
                     PanelUtils.handleInputForStringsPanel(this);
-                }
-                 else if (addPanelForStrings != null && e.getSource() == addPanelForStrings.getDoneBtn()) {
+                } else if (addPanelForStrings != null && e.getSource() == addPanelForStrings.getDoneBtn()) {
                     addPanelForStrings.getAdderFrame().setVisible(false);
                     addPanelForStrings.getAdderFrame().setEnabled(false);
-                }
-                 else if (e.getSource() == viewInfoPanel.viewDatesBtn) {
+                } else if (e.getSource() == viewInfoPanel.viewDatesBtn) {
 
-                     PanelUtils.showDates((parentPanel != null &&
-                             parentPanel.getDegreeObjects()[0] instanceof DegreeDateCommon)? parentPanel : panel);
-                }
-                 else if (e.getSource() == infoPanel.getSubmitBtn()) {
-                     Object o = infoPanel.getObjectInfo();
+                    PanelUtils.showDates((parentPanel != null &&
+                            parentPanel.getDegreeObjects()[0] instanceof DegreeDateCommon) ? parentPanel : panel);
+                } else if (e.getSource() == infoPanel.getSubmitBtn()) {
+                    Object o = infoPanel.getObjectInfo();
 
-                     if (o == null)
-                         return;
+                    if (o == null)
+                        return;
 
 
-                     StringBuilder textForLabel = new StringBuilder();
+                    StringBuilder textForLabel = new StringBuilder();
 
-                     if (o instanceof DegreeProgram)
-                         textForLabel.append(((DegreeProgram) o).getName());
+                    if (o instanceof DegreeProgram)
+                        textForLabel.append(((DegreeProgram) o).getName());
 
-                     else if (o instanceof Course)
-                         textForLabel.append(((Course) o).getName());
+                    else if (o instanceof Course)
+                        textForLabel.append(((Course) o).getName());
 
-                     else {
-                         textForLabel.append(o.getClass().getSimpleName()).append("-");
+                    else {
+                        textForLabel.append(o.getClass().getSimpleName()).append("-");
 
-                         if (!(o instanceof Question)) {
-                             if (addDatePanel != null && addDatePanel.getDates() != null) {
+                        if (!(o instanceof Question)) {
+                            if (addDatePanel != null && addDatePanel.getDates() != null) {
 
-                                 Date[] dates = addDatePanel.getDates();
+                                Date[] dates = addDatePanel.getDates();
 
-                                 if (o instanceof Semester)
-                                     ((Semester) o).setImportant_Dates(dates);
-                                 else if (o instanceof Assignment)
-                                     ((Assignment) o).setDue_Date(dates[0]);
-                                 else if (o instanceof Quiz)
-                                     ((Quiz) o).setDue_Date(dates[0]);
+                                if (o instanceof Semester)
+                                    ((Semester) o).setImportant_Dates(dates);
+                                else if (o instanceof Assignment)
+                                    ((Assignment) o).setDue_Date(dates[0]);
+                                else if (o instanceof Quiz)
+                                    ((Quiz) o).setDue_Date(dates[0]);
 
-                                 addDatePanel.getDateFrame().dispose();
-                                 addDatePanel = null;
-                             }
-                             if (addPanelForStrings != null && addPanelForStrings.getStoredStrings() != null) {
+                                addDatePanel.getDateFrame().dispose();
+                                addDatePanel = null;
+                            }
+                            if (addPanelForStrings != null && addPanelForStrings.getStoredStrings() != null) {
 
-                                 String[] stringsFromPanel = addPanelForStrings.getStoredStrings();
+                                String[] stringsFromPanel = addPanelForStrings.getStoredStrings();
 
-                                 for (String s : stringsFromPanel)
-                                     if (o instanceof Assignment)
-                                         ((Assignment) o).addQuestion(new Question(s));
-                                     else
-                                         ((Quiz) o).addTopic(new Topic(s));
+                                for (String s : stringsFromPanel)
+                                    if (o instanceof Assignment)
+                                        ((Assignment) o).addQuestion(new Question(s));
+                                    else
+                                        ((Quiz) o).addTopic(new Topic(s));
 
-                                 addPanelForStrings.getAdderFrame().dispose();
-                                 addPanelForStrings = null;
+                                addPanelForStrings.getAdderFrame().dispose();
+                                addPanelForStrings = null;
 
-                                 Object[] innerDegObj = o instanceof Assignment? ((Assignment) o).getQuestion() :
-                                         ((Quiz) o).getTopics();
-                                 String labelToUse = o instanceof Assignment? "Question-" : "Topic-";
+                                Object[] innerDegObj = o instanceof Assignment ? ((Assignment) o).getQuestion() :
+                                        ((Quiz) o).getTopics();
+                                String labelToUse = o instanceof Assignment ? "Question-" : "Topic-";
 
-                                 ((GeneralDegreeObjectPanel) panel.getInnerPanels()[panel.getDegreeObjects().length-1])
-                                         .incrementSetAndAdd(innerDegObj, this, labelToUse);
-                             }
+                                ((GeneralDegreeObjectPanel) panel.getInnerPanels()[panel.getDegreeObjects().length - 1])
+                                        .incrementSetAndAdd(innerDegObj, this, labelToUse);
+                            }
 
-                         }
-                     }
-
-                     panel.getDegreeObjects()[panel.getDegreeObjects().length - 1] = o;
-
-                     panel.addDegreeObject(this, textForLabel.toString(), 1);
-
-                     if (!(o instanceof DegreeProgram))
-                         ((DegreeObjectCommon) parentPanel.getDegreeObjects()[parentPanel.activePanelNo])
-                                 .setInnerDegreeObjectTo(panel.getDegreeObjects());
-                 }
-                 else if (e.getSource() == mainPanels.optionButtons.btns[GO_BACK]) {
-
-                    if (curPanelDepth >= 1) {
-                        GeneralDegreeObjectPanel toGoTo, toGoFrom;
-
-                        if (curPanelDepth >= 3)
-                            courPanel = semPanel.coursesPanels[semPanel.activePanelNo];
-
-                        switch (curPanelDepth) {
-                            case 1:
-                                toGoTo = degreesPanel;
-                                break;
-                            case 2:
-                                toGoTo = semPanel;
-                                break;
-                            case 3:
-                                toGoTo = courPanel;
-                                break;
-                            case 4:
-                                if (courPanel.clickedAssignmentPanel) {
-                                    toGoTo = courPanel.assignmentsPanels[courPanel.activePanelNo];
-                                } else {
-                                    toGoTo = courPanel.quizzesPanels[courPanel.activePanelNo];
-                                }
-                                break;
-                            default:
-                                System.out.println("Error! Unknown panel depth. Cannot exceed 4.");
-                                return;
                         }
-
-                        toGoFrom = (GeneralDegreeObjectPanel) toGoTo.getInnerPanels()[toGoTo.activePanelNo];
-
-                        PanelUtils.goBackOneDepth(toGoTo, toGoFrom, this,
-                                courPanel != null && courPanel.clickedAssignmentPanel);
-                        validate();
-                        curPanelDepth--;
                     }
-                } else System.out.println("test");
-            }
+
+                    panel.getDegreeObjects()[panel.getDegreeObjects().length - 1] = o;
+
+                    panel.addDegreeObject(this, textForLabel.toString(), 1);
+
+                    if (!(o instanceof DegreeProgram))
+                        ((DegreeObjectCommon) parentPanel.getDegreeObjects()[parentPanel.activePanelNo])
+                                .setInnerDegreeObjectTo(panel.getDegreeObjects());
+                } else if (e.getSource() == mainPanels.optionButtons.btns[GO_BACK]) {
+                    mainPanels.subPanels.mainContainerForDegreePanels.goBackOneDepth();
+                }
+            } else System.out.println("test");
         }
 
         @Override
         public void mouseClicked(MouseEvent e) {
-
-            GeneralDegreeObjectPanel toGoFrom, toGoTo;
-            boolean clickedAssignmentPanel;
-            int index;
-
-            ++curPanelDepth;
-
-
-            if(((JPanel) e.getSource()).getParent().getParent().getParent() instanceof CoursesPanel){
-
-                toGoFrom = (GeneralDegreeObjectPanel) ((JPanel) e.getSource()).getParent().getParent().getParent();
-                index = Integer.parseInt(((JPanel) e.getSource()).getName().split("-")[1]);
-
-                ((CoursesPanel) toGoFrom).clickedAssignmentPanel =
-                        e.getSource() == ((CoursesPanel) toGoFrom).goToAssignmentPanel[index];
-
-                toGoTo = (GeneralDegreeObjectPanel) toGoFrom.getInnerPanels()[index];
-                clickedAssignmentPanel = ((CoursesPanel) toGoFrom).clickedAssignmentPanel;
-            }
-            else {
-                index = Integer.parseInt(((JPanel) e.getSource()).getName());
-                clickedAssignmentPanel = ((JPanel) e.getSource()).getParent() instanceof AssignmentsPanel;
-
-                toGoFrom = (GeneralDegreeObjectPanel) ((JPanel) e.getSource()).getParent();
-                toGoTo = (GeneralDegreeObjectPanel) toGoFrom.getInnerPanels()[index];
-            }
-
-            PanelUtils.goIntoNextDepth(toGoFrom, toGoTo, this,
-                    index, clickedAssignmentPanel);
-
-            validate();
+            mainPanels.subPanels.mainContainerForDegreePanels.goIntoNextDepth(e);
         }
 
         @Override
