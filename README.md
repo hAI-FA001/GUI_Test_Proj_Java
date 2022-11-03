@@ -3,6 +3,6 @@
 this one goofy ahh project
 
 ### TODO
-- [ ] Add Basic Functionality   ![80%](https://progress-bar.dev/80)
-- [ ] Refactor Some Stuff      ![60%](https://progress-bar.dev/60)
-- [ ] Improve GUI (rip)       ![5%](https://progress-bar.dev/5)
+- [ ] Add Basic Functionality   ![85%](https://progress-bar.dev/85)
+- [ ] Refactor Some Stuff      ![70%](https://progress-bar.dev/70)
+- [ ] Improve GUI (rip)       ![50%](https://progress-bar.dev/50)
